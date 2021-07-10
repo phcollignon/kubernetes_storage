@@ -1,0 +1,9 @@
+rs.status()
+rs.initiate(
+  {_id:'rs0',
+   members:[ { _id:0, host:'guestbook-database-0.guestbook-database:27017'},
+             { _id:1, host:'guestbook-database-1.guestbook-database:27017'},
+             { _id:2, host:'guestbook-database-2.guestbook-database:27017'}]
+   });
+rs.status()
+db.createUser({user:"admin",pwd:"password",roles:[{db:"admin",role:"root"}]})

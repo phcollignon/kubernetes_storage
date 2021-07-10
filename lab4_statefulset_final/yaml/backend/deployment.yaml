@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook-backend 
+  template:
+    metadata:
+      labels:
+        app: guestbook-backend
+    spec:
+      containers:
+      - image: phico/backend:3.0
+        imagePullPolicy: Always
+        name: guestbook-backend
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: MONGODB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: guestbook-backend-config
+              key: mongodb-host
+        - name: MONGODB_DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: guestbook-backend-config
+              key: mongodb-db-name   
+        - name: MONGODB_DB_PARAM
+          valueFrom:
+            configMapKeyRef:
+              name: guestbook-backend-config
+              key: mongodb-db-param         
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: guestbook-backend-secret
+              key: mongodb-username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: guestbook-backend-secret
+              key: mongodb-password

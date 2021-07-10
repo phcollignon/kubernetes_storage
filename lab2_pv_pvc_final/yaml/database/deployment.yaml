@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: guestbook-database
+  template:
+    metadata:
+      labels:
+        app: guestbook-database
+    spec:
+      containers:
+        - image: mongo
+          name: guestbook-database
+          ports:
+            - name: mongodb
+              containerPort: 27017
+          env:
+          - name: MONGO_INITDB_DATABASE
+            value: guestbook
+          - name: MONGO_INITDB_ROOT_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: guestbook-database-secret
+                key: mongodb-username
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: guestbook-database-secret
+                key: mongodb-password
+          volumeMounts:
+          - name: mongodb-volume
+            mountPath: /data/db
+      volumes:
+        - name: mongodb-volume
+          persistentVolumeClaim:
+            claimName: nfs-pvc
+

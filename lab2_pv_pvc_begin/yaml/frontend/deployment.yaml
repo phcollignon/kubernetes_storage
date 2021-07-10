@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: guestbook-frontend
+spec:
+  replicas: 1 
+  selector:
+    matchLabels:
+      app: guestbook-frontend 
+  template:
+    metadata: 
+      labels:
+        app: guestbook-frontend
+    spec:
+      containers:
+      - image: phico/frontend:3.0
+        imagePullPolicy: Always
+        name: guestbook-frontend
+        ports:
+        - name: http
+          containerPort: 4200
+        volumeMounts:
+            - name: config-volume
+              mountPath: /usr/share/nginx/html/assets/config
+      volumes:
+      - name: config-volume
+        configMap:
+          name: guestbook-frontend-config
+
+
+
+              
+

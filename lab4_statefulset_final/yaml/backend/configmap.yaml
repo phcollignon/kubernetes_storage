@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: guestbook-backend-config
+data:
+  mongodb-host: "guestbook-database"
+  mongodb-db-name: "guestbook"
+  mongodb-db-param: "authSource=admin&replicaSet=rs0&readPreference=secondary"
+
+
